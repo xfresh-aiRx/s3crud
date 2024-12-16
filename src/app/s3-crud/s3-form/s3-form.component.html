@@ -1,14 +1,24 @@
-<form class="form" [formGroup]="uploadForm" (ngSubmit)="onSubmit(upload)">
-  <div class="field">
-    <label class="label"></label>
-    <input type="text" class="input" formControlName="bucketName" placeholder="Name of the bucket" />
-  </div>
-  <div class="field">
-    <label class="label"></label>
-    <input type="text" class="input" formControlName="bucketName" placeholder="Name of the bucket" />
-  </div>
-  <div class="field">
-    <label class="label"></label>
-    <input type="text" class="input" formControlName="bucketName" placeholder="Name of the bucket" />
-  </div>
-</form>
+<header><h1>List Buckets</h1></header>
+<main>
+  <form class="form" [formGroup]="listForm" (ngSubmit)="listObjects()">
+    <div class="field">
+      <label class="label">List Bucket Objects</label>
+      <input type="text" class="input" formControlName="bucketName" placeholder="Name of the bucket..."/>
+      <input type="text" class="input" formControlName="prefix" placeholder="object prefix..."/>
+    </div>
+    <div class="form-actions">
+      <button type="submit" [disabled]="listForm.invalid">List Objects</button>
+    </div>
+  </form>
+
+  <form class="form" [formGroup]="deleteForm" (ngSubmit)="deleteFile()">
+    <div class="field">
+      <label class="label">Delete Object Files</label>
+      <input type="text" class="input" formControlName="bucketName" placeholder="Name of the bucket..."/>
+      <input type="text" class="input" formControlName="objectKey" placeholder="object key..."/>
+    </div>
+    <div class="form-actions">
+      <button type="submit" [disabled]="listForm.invalid">Delete</button>
+    </div>
+  </form>
+</main>

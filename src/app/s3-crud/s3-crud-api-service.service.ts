@@ -17,32 +17,34 @@ export enum CRUD_OPERATION {
 })
 export class S3CrudApiServiceService {
   httpClient = inject(HttpClient);
-  baseUrl = 'localhost:8080/s3'
+  baseUrl = 'http://localhost:8080/s3'
 
 
-  list(bucketName: string): Observable<string[]> {
+  list$(bucketName: string, prefix: string): Observable<string> {
     //List S3 Buckets
-    let bucket = {"bucketName": bucketName};
-    return this.httpClient.get<string[]>(`${this.baseUrl}${CRUD_OPERATION.LIST}`, {params: bucket});
+    let httpParams = {"bucketName": bucketName, "prefix": prefix};
+    return this.httpClient.get<string>(`${this.baseUrl}${CRUD_OPERATION.LIST}`, {
+      params: httpParams,
+    });
   }
 
-  create() {
+  create$() {
     //Create S3 Bucket
     return this.httpClient.post(`${this.baseUrl}${CRUD_OPERATION.CREATE}`, {});
   }
 
-  upload() {
+  upload$() {
     //Upload File to S3 Bucket
     return this.httpClient.post(`${this.baseUrl}${CRUD_OPERATION.UPLOAD}`, {});
   }
 
-  deleteFile(bucketName: string, objectKey: string) {
+  deleteFile$(bucketName: string, objectKey: string) {
     //Delete S3 Bucket
     let httpParams = new HttpParams().set('bucketName', bucketName).set('objectKey', objectKey);
     return this.httpClient.delete(`${this.baseUrl}${CRUD_OPERATION.DELETE}`, {params: httpParams});
   }
 
-  downloadFile() {
+  downloadFile$() {
     //Download File from S3 Bucket
     return this.httpClient.get(`${this.baseUrl}${CRUD_OPERATION.DOWNLOAD}`, {responseType: 'blob' as 'json'});
   }
