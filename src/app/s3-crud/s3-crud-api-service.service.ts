@@ -3,7 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 //CRUD Operations for S3 Objects as enum
-enum CRUD_OPERATION {
+export enum CRUD_OPERATION {
   LIST = '/list',
   CREATE = '/create',
   UPLOAD = '/upload',
@@ -38,7 +38,8 @@ export class S3CrudApiServiceService {
 
   deleteFile(bucketName: string, objectKey: string) {
     //Delete S3 Bucket
-    return this.httpClient.delete(`${this.baseUrl}${CRUD_OPERATION.DELETE}`);
+    let httpParams = new HttpParams().set('bucketName', bucketName).set('objectKey', objectKey);
+    return this.httpClient.delete(`${this.baseUrl}${CRUD_OPERATION.DELETE}`, {params: httpParams});
   }
 
   downloadFile() {

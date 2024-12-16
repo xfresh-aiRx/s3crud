@@ -1,9 +1,10 @@
-import {Component, inject} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CRUD_OPERATION, S3CrudApiServiceService } from '../s3-crud-api-service.service';
 
 type S3Form = {
   bucketName: FormControl<string>,
-  objectKey: FormControl<string>,
+  objectKey?: FormControl<string>,
   filePath?: FormControl<string>
 };
 
@@ -15,30 +16,45 @@ type S3Form = {
 })
 export class S3FormComponent {
   private readonly formBuilder = inject(FormBuilder);
+  private s3CrudApiService = inject(S3CrudApiServiceService);
 
-  private uploadForm: FormGroup<S3Form> = this.formBuilder.nonNullable.group({
+  listForm: FormGroup<S3Form> = this.formBuilder.nonNullable.group({
     bucketName: ['', [Validators.required]],
-    objectKey: [''],
   });
 
-  onSubmit(form: FormGroup<S3Form>, type: 'download' | 'list' | 'create' | 'delete') {
+  onSubmit(type: CRUD_OPERATION) {
     switch (type) {
-      case 'download':
-        console.log('Download form submitted:', form.value);
+      case CRUD_OPERATION.LIST:
+        this.listBuckets();
         break;
-      case 'list':
-        console.log('List form submitted:', form.value);
+      case CRUD_OPERATION.CREATE:
+        this.createBucket();
         break;
-      case 'create':
-        console.log('Create form submitted:', form.value);
+      case CRUD_OPERATION.UPLOAD:
+        this.uploadFile();
         break;
-      case 'delete':
-        console.log('Delete form submitted:', form.value);
+      case CRUD_OPERATION.DELETE:
+        this.deleteFile();
         break;
-      default:
-        console.error(`Invalid form type: ${type}`);
+      case CRUD_OPERATION.DOWNLOAD:
+        this.downloadFile();
         break;
     }
+  }
+  downloadFile() {
+    // this.s3CrudApiService.download(this.uploadForm.value.bucketName, this.uploadForm.value.objectKey);
+  }
+  deleteFile() {
+    // this.s3CrudApiService.delete(this.uploadForm.value.bucketName, this.uploadForm.value.objectKey);
+  }
+  uploadFile() {
+    // this.s3CrudApiService.upload(this.uploadForm.value.bucketName, this.uploadForm.value.objectKey, this.uploadForm.value.filePath);
+  }
+  createBucket() {
+    // this.s3CrudApiService.create(this.uploadForm.value.bucketName);
+  }
+  listBuckets() {
+    this.s3CrudApiService.list(this.listForm.getRawValue().bucketName);
   }
 }
 

@@ -1,1 +1,14 @@
-<p>s3-form works!</p>
+<form class="form" [formGroup]="uploadForm" (ngSubmit)="onSubmit(upload)">
+  <div class="field">
+    <label class="label"></label>
+    <input type="text" class="input" formControlName="bucketName" placeholder="Name of the bucket" />
+  </div>
+  <div class="field">
+    <label class="label"></label>
+    <input type="text" class="input" formControlName="bucketName" placeholder="Name of the bucket" />
+  </div>
+  <div class="field">
+    <label class="label"></label>
+    <input type="text" class="input" formControlName="bucketName" placeholder="Name of the bucket" />
+  </div>
+</form>
